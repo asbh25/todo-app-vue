@@ -4,7 +4,7 @@
       <input type="checkbox" @change="todo.completed = !todo.completed">
       {{todo.title}}
     </span>
-    <button type="submit" class="rm">X</button>
+    <button class="rm" @click="$emit('remove-todo', todo.id)">X</button>
   </li>
 </template>
 
