@@ -1,6 +1,10 @@
 <template>
   <div id="app">
     <h1>Todo Application</h1>
+    <AddForm 
+      @add-todo="addTodo"
+    />
+    <hr>
     <TodoList 
       v-bind:todos="todos"
       @remove-todo="removeTodo"
@@ -10,25 +14,33 @@
 
 <script>
 import TodoList from '@/components/TodoList';
+import AddForm from '@/components/AddTodo';
 
 export default {
   name: 'App',
   data() {
     return {
-      todos: [
-        {'id': 1, 'title': 'buy 1', 'completed': false},
-        {'id': 2, 'title': 'buy 2', 'completed': false},
-        {'id': 3, 'title': 'buy 3', 'completed': false},
-      ]
+      todos: []
     }
+  },
+  mounted() {
+    fetch('https://jsonplaceholder.typicode.com/todos?_limit=3')
+      .then(response => response.json())
+      .then(json => {
+        this.todos = json;
+      })
   },
   methods: {
     removeTodo(id) {
       this.todos = this.todos.filter(todo => todo.id !== id);
+    },
+    addTodo(todo) {
+      this.todos.push(todo);
     }
   },
   components: {
-    TodoList
+    TodoList,
+    AddForm
   }
 }
 </script>
